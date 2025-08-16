@@ -49,8 +49,9 @@ const MainLayout = () => {
           </div>
           <div className="border-b border-white/15"></div>
           <div className="w-full flex flex-col gap-2 pt-2">
-            {LinksOptions.map((link) => (
+            {LinksOptions.map((link, index) => (
               <NavLink
+                key={index}
                 to={link.path}
                 className={({ isActive }) =>
                   clsx("px-2 py-3 rounded-sm", {
