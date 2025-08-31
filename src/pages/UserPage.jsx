@@ -1,4 +1,4 @@
-import Users from '@/containers/OutcomeContainer copy/Users'
+import Users from '@/containers/UserContainer/Users'
 import UsersContextProvider from '@/contexts/UsersContext'
 import React from 'react'
 

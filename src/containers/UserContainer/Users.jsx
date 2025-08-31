@@ -1,8 +1,5 @@
 import React from "react";
 import HeaderSection from "./section/HeaderSection";
-import { useOutcomeContext } from "@/contexts/OutcomeContext";
-import CreateOutcome from "./section/FormOutcome";
-import TableOutcome from "./section/TableUsers";
 import TableUsers from "./section/TableUsers";
 import ModalUser from "./section/ModalUser";
 
