@@ -5,7 +5,10 @@ import {
   apiGetOutcomes,
   apiUpdateOutcome,
 } from "@/services/outcomeService";
-import { apiGetAllItemOutcomes } from "@/services/itemOutcomeService";
+import {
+  apiCreateItemOutcome,
+  apiGetAllItemOutcomes,
+} from "@/services/itemOutcomeService";
 import { closeSwalLoading, swalLoading, swalSuccess } from "@/utils/swalUtils";
 import React from "react";
 
@@ -14,6 +17,7 @@ export const useOutcomeContext = () => React.useContext(OutcomeContext);
 
 const OutcomeContextProvider = ({ children }) => {
   const [typeExport, setTypeExport] = React.useState("currMonth"); // currMonth | prevMonth
+  const [openReport, setOpenReport] = React.useState(false);
   const [mode, setMode] = React.useState("add"); // add | history | edit
   const [price, setPrice] = React.useState(0);
   const [search, setSearch] = React.useState("");
@@ -46,9 +50,12 @@ const OutcomeContextProvider = ({ children }) => {
     setSelectedRow(row);
     setMode("edit");
     setPrice(row.price);
-    setItem(row.item);
+    setItem({
+      value: row.item._id,
+      label: row.item.name,
+    });
     setQuantity(row.quantity);
-    setCustomerName(row.customerName);
+    setCustomerName(row.personInTransaction);
     setWhatsapp(row.whatsapp);
     setReceipt(row.receipt);
   };
@@ -57,7 +64,7 @@ const OutcomeContextProvider = ({ children }) => {
     setLoadingTableHistory(true);
     try {
       const formatParams = {
-        ...(paginationHistory && paginationHistory.queryParams),
+        ...(paginationHistory && paginationHistory),
         ...(search && { search }),
         ...params,
       };
@@ -86,11 +93,12 @@ const OutcomeContextProvider = ({ children }) => {
     try {
       const formData = new FormData();
       formData.append("price", price);
-      formData.append("item", item);
+      formData.append("item", item?.value);
       formData.append("quantity", quantity);
-      formData.append("customerName", customerName);
+      formData.append("personInTransaction", customerName);
       formData.append("whatsapp", whatsapp);
       formData.append("receipt", receipt);
+      formData.append("totalPrice", totalPrice);
       await apiCreateOutcome(formData);
       await handleGetTableHistory();
       swalSuccess("Outcome successfully added!");
@@ -148,17 +156,31 @@ const OutcomeContextProvider = ({ children }) => {
     try {
       const formData = new FormData();
       formData.append("price", price);
-      formData.append("item", item);
+      formData.append("item", item?.value);
       formData.append("quantity", quantity);
-      formData.append("customerName", customerName);
+      formData.append("personInTransaction", customerName);
       formData.append("whatsapp", whatsapp);
       formData.append("totalPrice", totalPrice);
       if (receipt instanceof File) {
         formData.append("receipt", receipt); // Mengirim file receipt jika ada
       }
       await apiUpdateOutcome(selectedRow.id, formData);
-      await handleGetTableHistory();
+      setMode("history");
       swalSuccess("Outcome successfully updated!");
+    } catch (error) {
+      console.log(error);
+    } finally {
+      closeSwalLoading();
+    }
+  };
+  const handleCreateItem = async (input) => {
+    swalLoading();
+    try {
+      await apiCreateItemOutcome({
+        name: input,
+      });
+      await handleGetItemOptions();
+      swalSuccess("Item successfully added!");
     } catch (error) {
       console.log(error);
     } finally {
@@ -167,6 +189,8 @@ const OutcomeContextProvider = ({ children }) => {
   };
 
   const valueContext = {
+    openReport,
+    setOpenReport,
     typeExport,
     setTypeExport,
     mode,
@@ -210,6 +234,7 @@ const OutcomeContextProvider = ({ children }) => {
     handleGetTableHistory,
     handleDeleteOutcome,
     handleEditOutcome,
+    handleCreateItem,
   };
 
   React.useEffect(() => {

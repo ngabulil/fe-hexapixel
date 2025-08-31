@@ -17,6 +17,7 @@ const UsersContextProvider = ({ children }) => {
   const [search, setSearch] = React.useState("");
   const [openModal, setOpenModal] = React.useState(false);
   const [isEdit, setIsEdit] = React.useState(false);
+  const [isDetail, setIsDetail] = React.useState(false);
   const [selectedRow, setSelectedRow] = React.useState(null);
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -39,11 +40,13 @@ const UsersContextProvider = ({ children }) => {
   const handleCloseModal = () => {
     setOpenModal(false);
     setIsEdit(false);
+    setIsDetail(false);
     resetInput();
   };
-  const handleOpenModalEdit = (row) => {
+  const handleOpenModalRow = (row, mode) => {
+    if (mode === "edit") setIsEdit(true);
+    if (mode === "detail") setIsDetail(true);
     setSelectedRow(row);
-    setIsEdit(true);
     setOpenModal(true);
     setUsername(row.username);
     setPassword(row.password);
@@ -56,7 +59,7 @@ const UsersContextProvider = ({ children }) => {
     setLoadingTable(true);
     try {
       const formatParams = {
-        ...(pagination && pagination.queryParams),
+        ...(pagination && pagination),
         ...(search && { search }),
         ...params,
       };
@@ -148,11 +151,13 @@ const UsersContextProvider = ({ children }) => {
     setRole,
     photo,
     setPhoto,
+    isDetail,
+    setIsDetail,
     loadingTable,
     setLoadingTable,
     handleOpenModal,
     handleCloseModal,
-    handleOpenModalEdit,
+    handleOpenModalRow,
     handleGetTableUsers,
     handleCreateUser,
     handleDeleteUser,

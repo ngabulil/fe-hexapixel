@@ -18,9 +18,15 @@ export default {
 			colors: {
 				"primary-black-100": "#1F201F",
 				"primary-black-200": "#414141",
+				"primary-black-300": "#1E1E1E",
+				"primary-black-400": "#3E3E3E",
 				"primary-green-100": "#1CC079",
 				"primary-white-100": "#F5F5F5",
 				"primary-white-200": "#747474",
+				"primary-white-300": "#6E6E6E",
+				"primary-white-400": "#D1D1D1",
+				"primary-orange-100": "#F56927",
+				"primary-yellow-100": "#EBD40A",
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
 				card: {

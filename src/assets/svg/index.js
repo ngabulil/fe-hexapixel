@@ -9,5 +9,7 @@ import ChartUpSvg from "./chart-up.svg?react";
 import ChartDownSvg from "./chart-down.svg?react";
 import MoneyUp from "./money-up.svg?react";
 import MoneyDown from "./money-down.svg?react";
+import WhatsappSvg from "./whatsapp.svg?react";
+import InfoVectorSvg from "./info-vector.svg?react";
 
-export { LogoSvg, DashboardSvg, UserSvg, IncomeSvg, OutcomeSvg, InfoSvg, ReportSvg, ChartUpSvg, ChartDownSvg, MoneyUp, MoneyDown };
+export { LogoSvg, DashboardSvg, UserSvg, IncomeSvg, OutcomeSvg, InfoSvg, ReportSvg, ChartUpSvg, ChartDownSvg, MoneyUp, MoneyDown, WhatsappSvg, InfoVectorSvg };

@@ -5,7 +5,10 @@ import {
   apiGetIncomes,
   apiUpdateIncome,
 } from "@/services/incomeService";
-import { apiGetAllItemIncomes } from "@/services/itemIncomeService";
+import {
+  apiCreateItemIncome,
+  apiGetAllItemIncomes,
+} from "@/services/itemIncomeService";
 import { closeSwalLoading, swalLoading, swalSuccess } from "@/utils/swalUtils";
 import React from "react";
 
@@ -14,11 +17,12 @@ export const useIncomeContext = () => React.useContext(IncomeContext);
 
 const IncomeContextProvider = ({ children }) => {
   const [typeExport, setTypeExport] = React.useState("currMonth"); // currMonth | prevMonth
+  const [openReport, setOpenReport] = React.useState(false);
   const [mode, setMode] = React.useState("add"); // add | history | edit
   const [price, setPrice] = React.useState(0);
   const [totalPrice, setTotalPrice] = React.useState(0);
   const [search, setSearch] = React.useState("");
-  const [item, setItem] = React.useState(""); // item id
+  const [item, setItem] = React.useState(null); // item id
   const [quantity, setQuantity] = React.useState(0);
   const [customerName, setCustomerName] = React.useState("");
   const [whatsapp, setWhatsapp] = React.useState("");
@@ -44,7 +48,10 @@ const IncomeContextProvider = ({ children }) => {
     setSelectedRow(row);
     setMode("edit");
     setPrice(row.price);
-    setItem(row.item);
+    setItem({
+      value: row.item._id,
+      label: row.item.name,
+    });
     setQuantity(row.quantity);
     setCustomerName(row.customerName);
     setWhatsapp(row.whatsapp);
@@ -54,7 +61,7 @@ const IncomeContextProvider = ({ children }) => {
     setLoadingTableHistory(true);
     try {
       const formatParams = {
-        ...(paginationHistory && paginationHistory.queryParams),
+        ...(paginationHistory && paginationHistory),
         ...(search && { search }),
         ...params,
       };
@@ -83,13 +90,13 @@ const IncomeContextProvider = ({ children }) => {
     try {
       await apiCreateIncome({
         price,
-        item,
+        item: item?.value,
         quantity,
         customerName,
         whatsapp,
         totalPrice,
       });
-      await handleGetTableHistory();
+      await handleGetTableFixed();
       swalSuccess("Income successfully added!");
       resetInput();
     } catch (error) {
@@ -145,14 +152,28 @@ const IncomeContextProvider = ({ children }) => {
     try {
       await apiUpdateIncome(selectedRow.id, {
         price,
-        item,
+        item: item?.value,
         quantity,
         customerName,
         whatsapp,
         totalPrice,
       });
-      await handleGetTableHistory();
+      setMode("history");
       swalSuccess("Income successfully updated!");
+    } catch (error) {
+      console.log(error);
+    } finally {
+      closeSwalLoading();
+    }
+  };
+  const handleCreateItem = async (input) => {
+    swalLoading();
+    try {
+      await apiCreateItemIncome({
+        name: input,
+      });
+      await handleGetItemOptions();
+      swalSuccess("Item successfully added!");
     } catch (error) {
       console.log(error);
     } finally {
@@ -161,6 +182,8 @@ const IncomeContextProvider = ({ children }) => {
   };
 
   const valueContext = {
+    openReport,
+    setOpenReport,
     typeExport,
     setTypeExport,
     mode,
@@ -201,6 +224,7 @@ const IncomeContextProvider = ({ children }) => {
     handleGetTableHistory,
     handleDeleteIncome,
     handleEditIncome,
+    handleCreateItem,
   };
 
   React.useEffect(() => {

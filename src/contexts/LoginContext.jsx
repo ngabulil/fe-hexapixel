@@ -1,4 +1,5 @@
 import { apiLogin } from "@/services/loginService";
+import { setLocalStorage } from "@/utils/localStorage";
 import { closeSwalLoading, swalLoading, swalSuccess } from "@/utils/swalUtils";
 import React from "react";
 
@@ -14,6 +15,7 @@ const LoginContextProvider = ({ children }) => {
     swalLoading();
     try {
       const response = await apiLogin({ username, password });
+      setLocalStorage("token", response.result.token);
       swalSuccess(response.message);
     } catch (error) {
       console.log(error);

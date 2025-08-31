@@ -14,7 +14,7 @@ export const apiCreateOutcome = async (outcomeData) => {
 // 📄 Get All Outcomes (GET)
 export const apiGetOutcomes = async (params = {}) => {
     try {
-        const response = await getData("/outcomes", true, params); // Mengambil daftar outcome dengan query params dan token
+        const response = await getData("/outcomes", true, { params }); // Mengambil daftar outcome dengan query params dan token
         return response;
     } catch (error) {
         console.log("Error fetching outcomes:", error);
@@ -57,7 +57,7 @@ export const apiDeleteOutcome = async (id) => {
 
 export const apiExportOutcomesByMonth = async (monthType) => {
     try {
-        const response = await getData(`/outcomes/export/${monthType}`, true, {}, { responseType: 'blob' }); // Mengambil data export berdasarkan tipe bulan
+        const response = await getData(`/outcomes/export/${monthType}`, true, { responseType: 'blob' }); // Mengambil data export berdasarkan tipe bulan
 
         // Membuat URL sementara untuk file yang diterima
         const blob = new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
@@ -65,6 +65,9 @@ export const apiExportOutcomesByMonth = async (monthType) => {
         link.href = URL.createObjectURL(blob);
         link.download = `outcomes-${monthType}.xlsx`; // Nama file yang diunduh
         link.click(); // Memulai pengunduhan
+        link.remove();
+        // Membersihkan URL sementara
+        URL.revokeObjectURL(link.href);
 
     } catch (error) {
         console.log("Error exporting outcomes:", error);

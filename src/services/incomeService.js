@@ -3,7 +3,7 @@ import { createData, getData, updateData, deleteData } from "./api"; // Mengguna
 // 📊 Export Income (currMonth | prevMonth)
 export const apiExportIncome = async (type) => {
     try {
-        const response = await getData(`/incomes/export/${type}`, true, {}, { responseType: "blob" });
+        const response = await getData(`/incomes/export/${type}`, true, { responseType: "blob" });
 
         // Membuat URL sementara untuk file yang diterima
         const blob = new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
@@ -11,6 +11,9 @@ export const apiExportIncome = async (type) => {
         link.href = URL.createObjectURL(blob);
         link.download = `income-${type}.xlsx`; // Menentukan nama file yang diunduh
         link.click(); // Memulai pengunduhan
+        link.remove();
+        // Membersihkan URL sementara
+        URL.revokeObjectURL(link.href);
 
     } catch (error) {
         console.log("Error exporting income:", error);

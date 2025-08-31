@@ -38,3 +38,21 @@ export const closeSwalLoading = () => {
     loadingSwalInstance = null;
   }
 };
+
+export const swalConfirm = (onConfirm, message = "Are you sure?") => {
+  Swal.fire({
+    title: 'Confirm',
+    text: message,
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonText: 'Yes',
+    cancelButtonText: 'Cancel',
+    reverseButtons: true,
+  }).then((result) => {
+    if (result.isConfirmed) {
+      if (typeof onConfirm === 'function') {
+        onConfirm();
+      }
+    }
+  });
+};

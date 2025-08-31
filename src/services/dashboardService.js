@@ -43,7 +43,7 @@ export const apiGetOutcomeCountSummary = async (type) => {
 // 📈 Daily Summary Chart (income / outcome)
 export const apiGetDailySummaryChart = async (type, params) => {
     try {
-        const response = await getData(`/dashboard/daily/${type}`, true, params); // Menambahkan withToken = true
+        const response = await getData(`/dashboard/daily/${type}`, true, { params }); // Menambahkan withToken = true
         return response;
     } catch (error) {
         console.log(error);

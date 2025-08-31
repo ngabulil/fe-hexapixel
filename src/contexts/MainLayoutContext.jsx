@@ -31,10 +31,6 @@ const MainLayoutContextProvider = ({ children }) => {
     handleGetUserLogin,
   };
 
-  // if (loadingUserMe) {
-  //   return null;
-  // }
-
   return (
     <MainLayoutContext.Provider value={valueContext}>
       {children}

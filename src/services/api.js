@@ -1,6 +1,7 @@
 import axios from "axios";
 import { getLocalStorage, removeLocalStorage } from "@/utils/localStorage";
 import Swal from "sweetalert2"; // Pastikan kamu sudah menginstal sweetalert2
+import { delay } from "@/utils/delay";
 
 const BASE_URL = "http://localhost:3000/api";
 
@@ -10,6 +11,7 @@ const axiosInstance = axios.create({
 
 // Fungsi untuk menangani respons dengan token atau tanpa token
 const apiRequest = async (method, url, data, withToken = false, options = {}) => {
+  await delay(1000);
   // Mendapatkan token dari localStorage jika dibutuhkan
   const token = withToken ? getLocalStorage("token") : null;
 

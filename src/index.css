@@ -80,3 +80,29 @@ body,
   width: 100vw;
   overflow: hidden;
 }
+
+/* width */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #edfaf5;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #1cc079;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #1cc079;
+}
+
+.swal2-container,
+.swal2-popup {
+  pointer-events: auto !important;
+}

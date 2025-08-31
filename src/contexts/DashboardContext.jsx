@@ -23,20 +23,20 @@ const DashboardContextProvider = ({ children }) => {
   const [filterTotalIncome, setFilterTotalIncome] = React.useState("today"); // today | 7days | 30days
   const [totalIncomeData, setTotalIncomeData] = React.useState(null);
   const [filterTotalTransaction, setFilterTotalTransaction] =
-    React.useState("today"); // today | 7days | 30days
+    React.useState("3days"); // 3days | 7days | 30days
   const [totalTransactionData, setTotalTransactionData] = React.useState(null);
   const [filterTotalCost, setFilterTotalCost] = React.useState("today"); // today | 7days | 30days
   const [totalCostData, setTotalCostData] = React.useState(null);
-  const [filterTotalExpense, setFilterTotalExpense] = React.useState("today"); // today | 7days | 30days
+  const [filterTotalExpense, setFilterTotalExpense] = React.useState("3days"); // 3days | 7days | 30days
   const [totalExpenseData, setTotalExpenseData] = React.useState(null);
   const [filterTimeDailyTransaction, setFilterTimeDailyTransaction] =
     React.useState(7); // 7 | 14 | 30
   const [filterTypeDailyTransaction, setFilterTypeDailyTransaction] =
     React.useState("income"); // income | outcome
   const [dailyTransactionData, setDailyTransactionData] = React.useState(null);
-  const [filterHighestEarning, setFilterHighestEarning] = React.useState(7); // today | 7days | 30days
+  const [filterHighestEarning, setFilterHighestEarning] = React.useState("today"); // today | 7days | 30days
   const [highestEarningData, setHighestEarningData] = React.useState(null);
-  const [filterHighestExpense, setFilterHighestExpense] = React.useState(7); // today | 7days | 30days
+  const [filterHighestExpense, setFilterHighestExpense] = React.useState("today"); // today | 7days | 30days
   const [highestExpenseData, setHighestExpenseData] = React.useState(null);
   const [topClients, setTopClients] = React.useState([]);
   const [loadingTotalIncome, setLoadingTotalIncome] = React.useState(true);
@@ -122,7 +122,7 @@ const DashboardContextProvider = ({ children }) => {
           typeDate: filterTimeDailyTransaction,
         }
       );
-      setDailyTransactionData(response.result);
+      setDailyTransactionData(response.result.datas);
     } catch (error) {
       console.log(error);
     } finally {
@@ -133,7 +133,7 @@ const DashboardContextProvider = ({ children }) => {
     setLoadingHighestEarning(true);
     try {
       const response = await apiGetTopItemsIncomeSummary(filterHighestEarning);
-      setHighestEarningData(response.result);
+      setHighestEarningData(response.result.datas);
     } catch (error) {
       console.log(error);
     } finally {
@@ -144,7 +144,7 @@ const DashboardContextProvider = ({ children }) => {
     setLoadingHighestExpense(true);
     try {
       const response = await apiGetTopItemsOutcomeSummary(filterHighestExpense);
-      setHighestExpenseData(response.result);
+      setHighestExpenseData(response.result.datas);
     } catch (error) {
       console.log(error);
     } finally {

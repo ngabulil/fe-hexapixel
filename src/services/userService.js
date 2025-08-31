@@ -13,9 +13,9 @@ export const apiCreateUser = async (userData) => {
 };
 
 // 📄 Get All Users (GET)
-export const apiGetAllUsers = async () => {
+export const apiGetAllUsers = async (params) => {
     try {
-        const response = await getData("/users", true); // Mengambil daftar semua pengguna dengan token
+        const response = await getData("/users", true, { params }); // Mengambil daftar semua pengguna dengan token
         return response;
     } catch (error) {
         console.log("Error fetching users:", error);

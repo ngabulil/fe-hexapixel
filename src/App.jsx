@@ -1,30 +1,58 @@
-import React from 'react'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import LoginPage from './pages/LoginPage'
-import MainLayout from './layout/MainLayout'
-import DashboardPage from './pages/DashboardPage'
+import React from "react";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import LoginPage from "./pages/LoginPage";
+import MainLayout from "./layout/MainLayout";
+import DashboardPage from "./pages/DashboardPage";
+import MainLayoutContextProvider from "./contexts/MainLayoutContext";
+import ProfilePage from "./pages/ProfilePage";
+import IncomePage from "./pages/IncomePage";
+import OutcomePage from "./pages/OutcomePage ";
+import UserPage from "./pages/UserPage";
+import InfoPage from "./pages/InfoPage";
 
 const routes = createBrowserRouter([
   {
     path: "/login",
-    element: <LoginPage />
+    element: <LoginPage />,
   },
   {
     path: "/",
-    element: <MainLayout />,
+    element: (
+      <MainLayoutContextProvider>
+        <MainLayout />
+      </MainLayoutContextProvider>
+    ),
     children: [
       {
         index: true,
-        element: <DashboardPage />
-      }
-    ]
-  }
-])
+        element: <DashboardPage />,
+      },
+      {
+        path: "/profile",
+        element: <ProfilePage />,
+      },
+      {
+        path: "/income",
+        element: <IncomePage />,
+      },
+      {
+        path: "/outcome",
+        element: <OutcomePage />,
+      },
+      {
+        path: "/user",
+        element: <UserPage />,
+      },
+      {
+        path: "/info",
+        element: <InfoPage />,
+      },
+    ],
+  },
+]);
 
 const App = () => {
-  return (
-    <RouterProvider router={routes} />
-  )
-}
+  return <RouterProvider router={routes} />;
+};
 
-export default App
+export default App;
