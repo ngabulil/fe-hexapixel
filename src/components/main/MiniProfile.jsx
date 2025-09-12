@@ -2,7 +2,7 @@ import React from "react";
 import { Tooltip, TooltipTrigger, TooltipContent } from "../ui/tooltip";
 import { NavLink } from "react-router-dom";
 import { FaChevronDown } from "react-icons/fa6";
-import ImgPlaceholder from "../../assets/image/placeholder.png";
+import ImgPlaceholder from "@/assets/image/placeholder.png";
 import { handleLogout } from "@/utils/logout";
 import { useMainLayoutContext } from "@/contexts/MainLayoutContext";
 

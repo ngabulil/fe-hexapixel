@@ -1,6 +1,7 @@
 import React from "react";
 import HeaderSection from "./section/HeaderSection";
 import { useMainLayoutContext } from "@/contexts/MainLayoutContext";
+import ImgPlaceholder from "@/assets/image/placeholder-big.png";
 
 const Profile = () => {
   const {
@@ -19,7 +20,14 @@ const Profile = () => {
         <h1 className="text-2xl font-semibold">Profile User</h1>
         <div className="flex size-full gap-4">
           <div className="w-[25%] h-fit aspect-square shrink-0">
-            <img src={userMe?.photo} className="size-full" alt="" />
+            <img
+              src={userMe?.photo || ImgPlaceholder}
+              className="size-full"
+              alt=""
+              onError={(e) => {
+                e.target.src = ImgPlaceholder;
+              }}
+            />
           </div>
           <div className="size-full flex flex-col gap-2">
             <div className="w-fit flex flex-col gap-1">
