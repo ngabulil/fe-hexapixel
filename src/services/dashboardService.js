@@ -80,3 +80,13 @@ export const apiGetLatestClientIncome = async () => {
         throw error;
     }
 };
+
+export const apiGetDataReportPdfMonth = async (type, month) => {
+    try {
+        const response = await getData(`/${type}/${month}`, true); // Menambahkan withToken = true
+        return response;
+    } catch (error) {
+        console.log(error);
+        throw error
+    }
+}

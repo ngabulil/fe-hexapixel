@@ -106,3 +106,7 @@ body,
 .swal2-popup {
   pointer-events: auto !important;
 }
+
+.swal2-confirm {
+  background: #1CC079;
+}

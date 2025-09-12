@@ -56,6 +56,11 @@ const TableIncome = () => {
     handleDeleteIncome,
     handleEditIncome,
     handleCreateItem,
+    dataReport,
+    setDataReport,
+    loadingReport,
+    setLoadingReport,
+    handleGetPdfReport,
   } = useIncomeContext();
   const { userMe } = useMainLayoutContext();
   const columns = [
@@ -173,7 +178,6 @@ const TableIncome = () => {
   React.useEffect(() => {
     handleGetTableHistory();
   }, [search]);
-  
 
   return (
     <div className="size-full flex flex-col bg-white rounded-md p-2">

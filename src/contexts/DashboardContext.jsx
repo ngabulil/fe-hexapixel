@@ -1,5 +1,6 @@
 import {
   apiGetDailySummaryChart,
+  apiGetDataReportPdfMonth,
   apiGetIncomeCountSummary,
   apiGetIncomeSummary,
   apiGetLatestClientIncome,
@@ -34,9 +35,11 @@ const DashboardContextProvider = ({ children }) => {
   const [filterTypeDailyTransaction, setFilterTypeDailyTransaction] =
     React.useState("income"); // income | outcome
   const [dailyTransactionData, setDailyTransactionData] = React.useState(null);
-  const [filterHighestEarning, setFilterHighestEarning] = React.useState("today"); // today | 7days | 30days
+  const [filterHighestEarning, setFilterHighestEarning] =
+    React.useState("today"); // today | 7days | 30days
   const [highestEarningData, setHighestEarningData] = React.useState(null);
-  const [filterHighestExpense, setFilterHighestExpense] = React.useState("today"); // today | 7days | 30days
+  const [filterHighestExpense, setFilterHighestExpense] =
+    React.useState("today"); // today | 7days | 30days
   const [highestExpenseData, setHighestExpenseData] = React.useState(null);
   const [topClients, setTopClients] = React.useState([]);
   const [loadingTotalIncome, setLoadingTotalIncome] = React.useState(true);
@@ -51,6 +54,8 @@ const DashboardContextProvider = ({ children }) => {
   const [loadingHighestExpense, setLoadingHighestExpense] =
     React.useState(true);
   const [loadingTopClients, setLoadingTopClients] = React.useState(true);
+  const [dataReport, setDataReport] = React.useState(null);
+  const [loadingReport, setLoadingReport] = React.useState(true);
 
   const handleOpenReport = () => setOpenReport(true);
   const handleCloseReport = () => setOpenReport(false);
@@ -162,8 +167,24 @@ const DashboardContextProvider = ({ children }) => {
       setLoadingTopClients(false);
     }
   };
+  const handleGetPdfReport = async () => {
+    try {
+      setLoadingReport(true);
+      swalLoading();
+      const exportType = typeReport === "income" ? "incomes" : "outcomes";
+      const response = await apiGetDataReportPdfMonth(exportType, typeExport);
+      setDataReport(response.result);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoadingReport(false);
+      closeSwalLoading();
+    }
+  };
 
   const valueContext = {
+    loadingReport,
+    dataReport,
     openReport,
     setOpenReport,
     typeReport,
@@ -181,6 +202,7 @@ const DashboardContextProvider = ({ children }) => {
     handleGetHighestEarning,
     handleGetHighestExpense,
     handleGetTopClients,
+    handleGetPdfReport,
     filterTotalIncome,
     setFilterTotalIncome,
     filterTotalTransaction,
@@ -229,6 +251,7 @@ const DashboardContextProvider = ({ children }) => {
     setTopClients,
     loadingTopClients,
     setLoadingTopClients,
+    setDataReport
   };
 
   return (

@@ -9,6 +9,8 @@ import IncomePage from "./pages/IncomePage";
 import OutcomePage from "./pages/OutcomePage ";
 import UserPage from "./pages/UserPage";
 import InfoPage from "./pages/InfoPage";
+import MonthlyReportPDF from "./components/main/MonthlyReportPDF";
+import Test from "./pages/Test";
 
 const routes = createBrowserRouter([
   {
@@ -48,6 +50,10 @@ const routes = createBrowserRouter([
         element: <InfoPage />,
       },
     ],
+  },
+  {
+    path: "/test",
+    element: <Test />,
   },
 ]);
 

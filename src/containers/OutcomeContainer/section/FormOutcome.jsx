@@ -105,7 +105,7 @@ const CreateOutcome = () => {
         <div className="flex flex-col gap-4 size-full overflow-hidden">
           <div className="text-[24px] font-medium">Outcome Input</div>
           <div className="border-b border-black/20 w-full"></div>
-          <div className="size-full grid grid-cols-2 gap-4 px-2 overflow-auto">
+          <div className="w-full h-fit grid grid-cols-2 gap-8 px-2 overflow-auto">
             <div className="size-full flex flex-col gap-3">
               <InputWithLabel
                 label={"Price"}

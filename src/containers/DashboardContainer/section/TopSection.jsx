@@ -187,31 +187,42 @@ const TopSection = () => {
   };
   const options = ["today", "7days", "30days"];
   const optionsCount = ["3days", "7days", "30days"];
-  const percentTotalIncome =
-    Math.floor(
-      ((totalIncomeData?.current?.total - totalIncomeData?.previous?.total) /
-        totalIncomeData?.previous?.total) *
-        100
-    ) || 0;
-  const percentTotalTransaction =
-    Math.floor(
-      ((totalTransactionData?.current?.total -
-        totalTransactionData?.previous?.total) /
-        totalTransactionData?.previous?.total) *
-        100
-    ) || 0;
-  const percentTotalCost =
-    Math.floor(
-      ((totalCostData?.current?.total - totalCostData?.previous?.total) /
-        totalCostData?.previous?.total) *
-        100
-    ) || 0;
-  const percentTotalExpense =
-    Math.floor(
-      ((totalExpenseData?.current?.total - totalExpenseData?.previous?.total) /
-        totalExpenseData?.previous?.total) *
-        100
-    ) || 0;
+  function calculatePercentage(current, previous) {
+    if (!previous || previous === 0) {
+      return {
+        status: current > 0 ? "plus" : "neutral",
+        value: current,
+      };
+    }
+
+    const diff = current - previous;
+    const percent = Math.floor((diff / previous) * 100);
+
+    return {
+      status: percent >= 0 ? "plus" : "minus",
+      value: Math.abs(percent),
+    };
+  }
+
+  const percentTotalIncome = calculatePercentage(
+    totalIncomeData?.current?.total,
+    totalIncomeData?.previous?.total
+  );
+
+  const percentTotalTransaction = calculatePercentage(
+    totalTransactionData?.current?.total,
+    totalTransactionData?.previous?.total
+  );
+
+  const percentTotalCost = calculatePercentage(
+    totalCostData?.current?.total,
+    totalCostData?.previous?.total
+  );
+
+  const percentTotalExpense = calculatePercentage(
+    totalExpenseData?.current?.total,
+    totalExpenseData?.previous?.total
+  );
 
   React.useEffect(() => {
     handleGetTotalIncome();
@@ -255,13 +266,14 @@ const TopSection = () => {
               </div>
             </div>
             <div className="absolute bottom-2 left-2 flex gap-2 items-center">
-              {percentTotalIncome >= 0 ? (
+              {percentTotalIncome.status === "plus" ? (
                 <ChartUpSvg className="size-[20px]" />
               ) : (
                 <ChartDownSvg className="size-[20px]" />
               )}
               <div className="text-[10px]">
-                {percentTotalIncome}% from previous period
+                {percentTotalIncome.status === "plus" ? "+" : "-"}
+                {percentTotalIncome.value}% from previous period
               </div>
             </div>
           </>
@@ -297,13 +309,14 @@ const TopSection = () => {
                 </div>
               </div>
               <div className="flex w-full gap-2 items-center overflow-hidden">
-                {percentTotalTransaction >= 0 ? (
+                {percentTotalTransaction.status === "plus" ? (
                   <ChartUpSvg className="size-[20px]" />
                 ) : (
                   <ChartDownSvg className="size-[20px]" />
                 )}
                 <div className="text-[10px] truncate">
-                  {percentTotalTransaction}% from previous period
+                  {percentTotalTransaction.status === "plus" ? "+" : "-"}
+                  {percentTotalTransaction.value}% from previous period
                 </div>
               </div>
             </div>
@@ -370,13 +383,14 @@ const TopSection = () => {
               </div>
             </div>
             <div className="absolute bottom-2 left-2 flex gap-2 items-center">
-              {percentTotalCost >= 0 ? (
+              {percentTotalCost.status === "plus" ? (
                 <ChartUpSvg className="size-[20px]" />
               ) : (
                 <ChartDownSvg className="size-[20px]" />
               )}
               <div className="text-[10px]">
-                {percentTotalCost}% from previous period
+                {percentTotalCost.status === "plus" ? "+" : "-"}
+                {percentTotalCost.value}% from previous period
               </div>
             </div>
           </>
@@ -412,13 +426,14 @@ const TopSection = () => {
                 </div>
               </div>
               <div className="flex w-full gap-2 items-center overflow-hidden">
-                {percentTotalExpense >= 0 ? (
+                {percentTotalExpense.status === "plus" ? (
                   <ChartUpSvg className="size-[20px]" />
                 ) : (
                   <ChartDownSvg className="size-[20px]" />
                 )}
                 <div className="text-[10px] truncate">
-                  {percentTotalExpense}% from previous period
+                  {percentTotalExpense.status === "plus" ? "+" : "-"}
+                  {percentTotalExpense.value}% from previous period
                 </div>
               </div>
             </div>

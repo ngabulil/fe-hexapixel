@@ -11,6 +11,7 @@ import {
 } from "@/services/itemOutcomeService";
 import { closeSwalLoading, swalLoading, swalSuccess } from "@/utils/swalUtils";
 import React from "react";
+import { apiGetDataReportPdfMonth } from "@/services/dashboardService";
 
 const OutcomeContext = React.createContext();
 export const useOutcomeContext = () => React.useContext(OutcomeContext);
@@ -35,6 +36,8 @@ const OutcomeContextProvider = ({ children }) => {
   const [loadingInput, setLoadingInput] = React.useState(true);
   const [loadingTableFixed, setLoadingTableFixed] = React.useState(true);
   const [loadingTableHistory, setLoadingTableHistory] = React.useState(true);
+  const [dataReport, setDataReport] = React.useState(null);
+  const [loadingReport, setLoadingReport] = React.useState(true);
 
   const resetInput = () => {
     setPrice(0);
@@ -187,8 +190,26 @@ const OutcomeContextProvider = ({ children }) => {
       closeSwalLoading();
     }
   };
+  const handleGetPdfReport = async () => {
+    try {
+      setLoadingReport(true);
+      swalLoading();
+      const response = await apiGetDataReportPdfMonth("outcomes", typeExport);
+      setDataReport(response.result);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoadingReport(false);
+      closeSwalLoading();
+    }
+  };
 
   const valueContext = {
+    dataReport,
+    setDataReport,
+    loadingReport,
+    setLoadingReport,
+    handleGetPdfReport,
     openReport,
     setOpenReport,
     typeExport,

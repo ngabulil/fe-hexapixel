@@ -8,6 +8,25 @@ import {
 } from "../ui/select";
 import clsx from "clsx";
 
+function formatLabel(str) {
+  const map = {
+    currMonth: "Current Month",
+    prevMonth: "Previous Month",
+    "7days": "7 Days",
+    "3days": "3 Days",
+    "14days": "14 Days",
+    "30days": "30 Days",
+  };
+
+  // kalau ada di map, langsung return
+  if (map[str]) return map[str];
+
+  // fallback: camelCase → spasi
+  return str
+    .replace(/([a-z])([A-Z])/g, "$1 $2")
+    .replace(/^./, (char) => char.toUpperCase());
+}
+
 const MainSelect = ({
   value,
   label,
@@ -32,7 +51,7 @@ const MainSelect = ({
         <SelectContent {...contentProps}>
           {options.map((option, i) => (
             <SelectItem key={i} value={option} className="capitalize">
-              {option + suffix}
+              {formatLabel(String(option)) + suffix}
             </SelectItem>
           ))}
         </SelectContent>

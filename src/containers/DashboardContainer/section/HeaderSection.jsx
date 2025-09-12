@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ReportSvg } from "@/assets/svg";
 import { FaChevronDown } from "react-icons/fa6";
@@ -20,6 +20,7 @@ import MainSelect from "@/components/main/MainSelect";
 import { useDashboardContext } from "@/contexts/DashboardContext";
 import { NavLink } from "react-router-dom";
 import MiniProfile from "@/components/main/MiniProfile";
+import MonthlyReportPDF from "@/components/main/MonthlyReportPDF";
 
 const HeaderSection = () => {
   const {
@@ -88,10 +89,20 @@ const HeaderSection = () => {
     setTopClients,
     loadingTopClients,
     setLoadingTopClients,
+    handleGetPdfReport,
+    loadingReport,
+    dataReport,
+    setDataReport,
   } = useDashboardContext();
 
   const optionsTypeReport = ["income", "outcome"];
   const optionsTypeExport = ["currMonth", "prevMonth"];
+
+  useEffect(() => {
+    if (dataReport && !loadingReport) {
+      setDataReport(null);
+    }
+  }, [dataReport]);
 
   return (
     <div className="h-[42px] w-full shrink-0 flex justify-between">
@@ -123,15 +134,19 @@ const HeaderSection = () => {
                 value={typeExport}
               />
             </div>
-            <div>
+            <div className="flex gap-3">
               <Button className="w-full" onClick={handleDownloadReport}>
-                Download
+                Download Excel
+              </Button>
+              <Button className="w-full" onClick={handleGetPdfReport}>
+                Download PDF
               </Button>
             </div>
           </DialogHeader>
         </DialogContent>
       </Dialog>
       <MiniProfile />
+      {!loadingReport && dataReport && <MonthlyReportPDF data={dataReport} title="Monthly Report" />}
     </div>
   );
 };

@@ -28,7 +28,7 @@ const MiniProfile = () => {
               }}
               alt=""
             />
-            <div className="flex flex-col leading-none gap-0.5">
+            <div className="flex flex-col leading-none gap-0.5 text-left">
               <div className="text-[11px] text-primary-black-200">
                 {userMe?.fullName}
               </div>

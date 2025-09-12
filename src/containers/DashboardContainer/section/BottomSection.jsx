@@ -193,7 +193,7 @@ const BottomSection = () => {
                 options={optionsRange}
                 onChange={setFilterTimeDailyTransaction}
                 value={filterTimeDailyTransaction}
-                suffix="days"
+                suffix=" Days"
               />
             </div>
           </div>
