@@ -143,7 +143,19 @@ const ModalUser = () => {
                       htmlFor="receipt"
                       className="cursor-pointer w-full aspect-square border border-dashed flex flex-col text-[12px] p-2"
                     >
-                      <FiUpload className="size-[50%] m-auto text-primary-white-400" />
+                      {photo ? (
+                        <img
+                          src={
+                            typeof photo === "string"
+                              ? photo
+                              : URL.createObjectURL(photo)
+                          }
+                          alt=""
+                          className="w-full aspect-square object-cover"
+                        />
+                      ) : (
+                        <FiUpload className="size-[50%] m-auto text-primary-white-400" />
+                      )}
                       <div className="text-black/50 pb-1 text-center">
                         {photo?.name || "Upload Photo"}
                       </div>

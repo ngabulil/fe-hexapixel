@@ -192,11 +192,27 @@ const CreateOutcome = () => {
                     htmlFor="receipt"
                     className="cursor-pointer w-full aspect-square border border-dashed flex flex-col text-[12px] p-2"
                   >
-                    <FiUpload className="size-[50%] m-auto text-primary-white-400" />
+                    {console.log(receipt)}
+                    {receipt ? (
+                      <img
+                        src={
+                          typeof receipt === "string"
+                            ? receipt
+                            : URL.createObjectURL(receipt)
+                        }
+                        className="size-full"
+                        alt=""
+                      />
+                    ) : (
+                      <FiUpload className="size-[50%] m-auto text-primary-white-400" />
+                    )}
                     <div className="text-black/50 pb-1 text-center">
                       {receipt?.name || "Upload Receipt"}
                     </div>
-                    <div type="submit" className="py-1.5 px-3 rounded-md bg-primary-green-100 text-white w-fit mx-auto">
+                    <div
+                      type="submit"
+                      className="py-1.5 px-3 rounded-md bg-primary-green-100 text-white w-fit mx-auto"
+                    >
                       Select File
                     </div>
                   </label>

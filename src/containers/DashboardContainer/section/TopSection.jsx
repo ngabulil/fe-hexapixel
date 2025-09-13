@@ -44,6 +44,11 @@ import { useDashboardContext } from "@/contexts/DashboardContext";
 import MainSelect from "@/components/main/MainSelect";
 import { FaSpinner } from "react-icons/fa";
 import MainLoading from "@/components/main/MainLoading";
+import {
+  Tooltip as TooltipPrimitive,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const fmtRange = (fromISO, toISO, type) => {
   if (type === "today") {
@@ -259,13 +264,13 @@ const TopSection = () => {
           <MainLoading />
         ) : (
           <>
-            <div className="w-full h-fit flex gap-1">
+            <div className="w-full h-full flex gap-1 items-center">
               <div className="text-[12px]">Rp</div>
               <div className="text-[44px] leading-none break-all">
                 {formatRibuan(totalIncomeData?.current?.total || 0)}
               </div>
             </div>
-            <div className="absolute bottom-2 left-2 flex gap-2 items-center">
+            <div className="mt-auto flex gap-2 items-center">
               {percentTotalIncome.status === "plus" ? (
                 <ChartUpSvg className="size-[20px]" />
               ) : (
@@ -299,12 +304,12 @@ const TopSection = () => {
           <MainLoading />
         ) : (
           <div className="size-full grid grid-cols-2 gap-2 overflow-hidden">
-            <div className="size-full flex flex-col justify-between gap-2">
-              <div className="flex gap-1 size-full">
-                <div className="text-[44px] leading-none py-2">
+            <div className="size-full flex flex-col justify-between gap-5">
+              <div className="flex gap-1 size-full items-center">
+                <div className="text-[44px] leading-none">
                   {totalTransactionData?.current?.total}
                 </div>
-                <div className="text-[10px] leading-none py-6">
+                <div className="text-[10px] leading-none">
                   {formatDay(filterTotalTransaction)}
                 </div>
               </div>
@@ -314,10 +319,20 @@ const TopSection = () => {
                 ) : (
                   <ChartDownSvg className="size-[20px]" />
                 )}
-                <div className="text-[10px] truncate">
-                  {percentTotalTransaction.status === "plus" ? "+" : "-"}
-                  {percentTotalTransaction.value}% from previous period
-                </div>
+                <TooltipPrimitive>
+                  <TooltipTrigger>
+                    <div className="text-[10px] truncate">
+                      {percentTotalTransaction.status === "plus" ? "+" : "-"}
+                      {percentTotalTransaction.value}% from previous period
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <div className="text-[10px] bg-black p-2 rounded-md">
+                      {percentTotalTransaction.status === "plus" ? "+" : "-"}
+                      {percentTotalTransaction.value}% from previous period
+                    </div>
+                  </TooltipContent>
+                </TooltipPrimitive>
               </div>
             </div>
             <div
@@ -331,25 +346,48 @@ const TopSection = () => {
                   margin={{ bottom: 0, left: 0, right: 0, top: 0 }}
                   data={chartData}
                 >
-                  {/* <Tooltip
-                  wrapperStyle={{ visibility: "hidden" }}
-                  cursor={false}
-                  content={
-                    <OnlyEdgeTooltip
-                      getContainerRect={() =>
-                        chartWrapperIncomeRef.current?.getBoundingClientRect()
-                      }
-                    />
-                  }
-                /> */}
+                  <defs>
+                    <linearGradient
+                      id="incomeGradient"
+                      x1="0"
+                      y1="0"
+                      x2="0"
+                      y2="1"
+                    >
+                      {/* opacity lebih tebal di atas */}
+                      <stop
+                        offset="0%"
+                        stopColor="var(--color-desktop)"
+                        stopOpacity={0.7}
+                      />
+                      <stop
+                        offset="100%"
+                        stopColor="var(--color-desktop)"
+                        stopOpacity={0}
+                      />
+                    </linearGradient>
+                  </defs>
+
                   <Area
                     dataKey="desktop"
-                    type="natural"
-                    fill="var(--color-desktop)"
-                    fillOpacity={0.3}
+                    type="monotone"
+                    fill="url(#incomeGradient)"
+                    fillOpacity={0.3} // ini biarin aja, yg ngatur tebalnya gradient di atas
                     stroke="var(--color-desktop)"
                   />
                 </AreaChart>
+
+                {/* <Tooltip
+                    wrapperStyle={{ visibility: "hidden" }}
+                    cursor={false}
+                    content={
+                      <OnlyEdgeTooltip
+                        getContainerRect={() =>
+                          chartWrapperIncomeRef.current?.getBoundingClientRect()
+                        }
+                      />
+                    }
+                  /> */}
               </ChartContainer>
             </div>
           </div>
@@ -376,13 +414,13 @@ const TopSection = () => {
           <MainLoading />
         ) : (
           <>
-            <div className="w-full h-fit flex gap-1">
+            <div className="w-full h-full flex gap-1 items-center">
               <div className="text-[12px]">Rp</div>
               <div className="text-[44px] leading-none break-all">
                 {formatRibuan(totalCostData?.current?.total || 0)}
               </div>
             </div>
-            <div className="absolute bottom-2 left-2 flex gap-2 items-center">
+            <div className="mt-auto flex gap-2 items-center">
               {percentTotalCost.status === "plus" ? (
                 <ChartUpSvg className="size-[20px]" />
               ) : (
@@ -416,12 +454,12 @@ const TopSection = () => {
           <MainLoading />
         ) : (
           <div className="size-full grid grid-cols-2 gap-2 overflow-hidden">
-            <div className="size-full flex flex-col justify-between gap-2">
-              <div className="flex gap-1 size-full">
-                <div className="text-[44px] leading-none py-2">
+            <div className="size-full flex flex-col justify-between gap-5">
+              <div className="flex gap-1 size-full items-center">
+                <div className="text-[44px] leading-none">
                   {totalExpenseData?.current?.total}
                 </div>
-                <div className="text-[10px] leading-none py-6">
+                <div className="text-[10px] leading-none">
                   {formatDay(filterTotalExpense)}
                 </div>
               </div>
@@ -431,10 +469,20 @@ const TopSection = () => {
                 ) : (
                   <ChartDownSvg className="size-[20px]" />
                 )}
-                <div className="text-[10px] truncate">
-                  {percentTotalExpense.status === "plus" ? "+" : "-"}
-                  {percentTotalExpense.value}% from previous period
-                </div>
+                <TooltipPrimitive>
+                  <TooltipTrigger>
+                    <div className="text-[10px] truncate">
+                      {percentTotalExpense.status === "plus" ? "+" : "-"}
+                      {percentTotalExpense.value}% from previous period
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <div className="text-[10px] p-2 bg-black rounded-md">
+                      {percentTotalExpense.status === "plus" ? "+" : "-"}
+                      {percentTotalExpense.value}% from previous period
+                    </div>
+                  </TooltipContent>
+                </TooltipPrimitive>
               </div>
             </div>
             <div
@@ -448,26 +496,49 @@ const TopSection = () => {
                   margin={{ bottom: 0, left: 0, right: 0, top: 0 }}
                   data={chartDataExpense}
                 >
-                  {/* <Tooltip
-                  wrapperStyle={{ visibility: "hidden" }}
-                  cursor={false}
-                  content={
-                    <OnlyEdgeTooltip
-                      getContainerRect={() =>
-                        chartWrapperExpenseRef.current?.getBoundingClientRect()
-                      }
-                    />
-                  }
-                /> */}
+                  {/* Gradient untuk expense */}
+                  <defs>
+                    <linearGradient
+                      id="expenseGradient"
+                      x1="0"
+                      y1="0"
+                      x2="0"
+                      y2="1"
+                    >
+                      <stop
+                        offset="0%"
+                        stopColor="var(--color-desktop)"
+                        stopOpacity={0.7}
+                      />
+                      <stop
+                        offset="100%"
+                        stopColor="var(--color-desktop)"
+                        stopOpacity={0}
+                      />
+                    </linearGradient>
+                  </defs>
+
                   <Area
                     dataKey="desktop"
-                    type="natural"
-                    fill="var(--color-desktop)"
+                    type="monotone"
+                    fill="url(#expenseGradient)"
                     fillOpacity={0.3}
                     stroke="var(--color-desktop)"
                   />
                 </AreaChart>
               </ChartContainer>
+
+              {/* <Tooltip
+                    wrapperStyle={{ visibility: "hidden" }}
+                    cursor={false}
+                    content={
+                      <OnlyEdgeTooltip
+                        getContainerRect={() =>
+                          chartWrapperExpenseRef.current?.getBoundingClientRect()
+                        }
+                      />
+                    }
+                  /> */}
             </div>
           </div>
         )}
