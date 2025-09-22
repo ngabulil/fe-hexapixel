@@ -231,19 +231,31 @@ const BottomSection = () => {
                     }}
                   />
                   <ChartTooltip
-                    content={
-                      <ChartTooltipContent
-                        className="w-[150px]"
-                        nameKey="views"
-                        labelFormatter={(value) => {
-                          return new Date(value).toLocaleDateString("en-US", {
-                            month: "short",
-                            day: "numeric",
-                            year: "numeric",
-                          });
-                        }}
-                      />
-                    }
+                    content={({ active, payload, label }) => {
+                      if (active && payload && payload.length) {
+                        const data = payload[0].payload; // ini object { date, total, totalTransaction }
+
+                        return (
+                          <div className="bg-white border p-2 rounded shadow-md text-xs">
+                            <div className="pb-1">
+                              <strong>
+                                {new Date(data.date).toLocaleDateString(
+                                  "en-US",
+                                  {
+                                    month: "short",
+                                    day: "numeric",
+                                    year: "numeric",
+                                  }
+                                )}
+                              </strong>
+                            </div>
+                            <div>Total: Rp {data.total.toLocaleString()}</div>
+                            <div>Transactions: {data.totalTransaction}</div>
+                          </div>
+                        );
+                      }
+                      return null;
+                    }}
                   />
                   <Bar dataKey={"desktop"} fill={`#1CC079`} />
                 </BarChart>
