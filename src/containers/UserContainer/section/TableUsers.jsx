@@ -73,7 +73,7 @@ const TableUsers = () => {
       cell: ({ value }) => <span>{value}</span>,
       thClassName: "!w-[20%]",
     },
-    
+
     {
       id: "username",
       header: "Username",
@@ -134,23 +134,27 @@ const TableUsers = () => {
               >
                 <FaEye className="size-full text-primary-green-100" />
               </button>
-              <button
-                className="size-[24px] shrink-0 flex"
-                onClick={() => handleOpenModalRow(row, "edit")}
-              >
-                <AiFillEdit className="size-full text-primary-yellow-100" />
-              </button>
-              <button
-                className="size-[24px] shrink-0 flex"
-                onClick={() =>
-                  swalConfirm(
-                    () => handleDeleteUser(value),
-                    "Are you sure you want to delete this user ?"
-                  )
-                }
-              >
-                <MdDeleteForever className="size-full text-primary-orange-100" />
-              </button>
+              {userMe.role !== "employee" && (
+                <>
+                  <button
+                    className="size-[24px] shrink-0 flex"
+                    onClick={() => handleOpenModalRow(row, "edit")}
+                  >
+                    <AiFillEdit className="size-full text-primary-yellow-100" />
+                  </button>
+                  <button
+                    className="size-[24px] shrink-0 flex"
+                    onClick={() =>
+                      swalConfirm(
+                        () => handleDeleteUser(value),
+                        "Are you sure you want to delete this user ?"
+                      )
+                    }
+                  >
+                    <MdDeleteForever className="size-full text-primary-orange-100" />
+                  </button>
+                </>
+              )}
             </>
           </div>
         );

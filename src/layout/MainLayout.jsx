@@ -40,7 +40,6 @@ const MainLayout = () => {
       name: "User Management",
       path: "/user",
       icon: <UserSvg />,
-      isHide: userMe?.role === "employee",
     },
     {
       name: "Info",
